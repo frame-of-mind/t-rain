@@ -5,10 +5,12 @@
     <title>Train | Report</title>
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <form action="{{ url_for('handle_data') }}">
-      First name: <input type="text" name="fname"><br>
-      Last name: <input type="text" name="lname"><br>
+    <h1>Train report</h1>
+    <form action="/hour" method="post">
+      <label>From:</label> <input type="text" name="from" value="ROGOREDO">
+      <label>To:</label> <input type="text" name="to" value="LODI"><br>
+      <label>Started:</label> <input type="datetime-local" name="started" id="started">
+      <label>Arrived:</label> <input type="datetime-local" name="arrived" id="arrived"><br>
       <input type="submit" value="Submit">
     </form>
 </body>
