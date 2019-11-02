@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, jsonify, request
 
+import repository
+
 app = Flask(__name__, static_url_path='/static')
 host = os.getenv('HOST', '0.0.0.0')
 
@@ -13,8 +15,10 @@ def index():
 
 @app.route('/hour', methods=['POST'])
 def hour():
+    train = request.form.to_dict(flat=True)
     print(request.form.to_dict(flat=True))
     # save to db
+    train_id = repository.insert(train)
     return request.form.to_dict(flat=True), 200
 
 
