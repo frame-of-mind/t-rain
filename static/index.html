@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Train | Report</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
     <h1>Train report</h1>
     <form action="/hour" method="post">
-      <label>From:</label> <input type="text" name="from" value="ROGOREDO">
-      <label>To:</label> <input type="text" name="to" value="LODI"><br>
+      <label>From:</label> <input id="from" type="text" name="from" value="ROGOREDO">
+      <label>To:</label> <input id="to" type="text" name="to" value="LODI"><a href="#" onclick="onSwitch()">switch</a><br>
       <label>Started:</label> <input type="datetime-local" name="started" id="started">
       <label>Arrived:</label> <input type="datetime-local" name="arrived" id="arrived"><br>
       <input type="submit" value="Submit">
     </form>
+    <script>
+        function onSwitch(){
+            var fromVal = $('#from').val();
+            $('#from').val($('#to').val());
+            $('#to').val(fromVal);
+        }
+    </script>
 </body>
 </html>
