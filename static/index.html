@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <title>Train | Report</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $( document ).ready(function() {
+            console.log( "ready!" );
+            $.ajax({
+                url: "/load",
+                method: 'GET',
+                success: function(result) {
+                    result.data.forEach( function(data) {
+                        $('#log-list').prepend(`
+                        <li>${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
+                        `)
+                    })
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <h1>Train report</h1>
@@ -12,13 +28,44 @@
       <label>To:</label> <input id="to" type="text" name="to" value="LODI"><a href="#" onclick="onSwitch()">switch</a><br>
       <label>Started:</label> <input type="datetime-local" name="started" id="started">
       <label>Arrived:</label> <input type="datetime-local" name="arrived" id="arrived"><br>
-      <input type="submit" value="Submit">
+      <input type="button" onclick="submitTrain()" value="Submit">
     </form>
+    <hr>
+    <h1>Log</h1>
+    <div>
+        <ul id="log-list">
+
+        </ul>
+    </div>
     <script>
         function onSwitch(){
-            var fromVal = $('#from').val();
+            let fromVal = $('#from').val();
             $('#from').val($('#to').val());
             $('#to').val(fromVal);
+        }
+        function submitTrain() {
+            let data = {
+                from: $('#from').val(),
+                to: $('#to').val(),
+                started: $('#started').val(),
+                arrived: $('#arrived').val()
+            };
+            console.log(data);
+
+            $.ajax({
+                url: "/hour",
+                method: 'POST',
+                data: data,
+                success: function(result) {
+                    $('#from').val('')
+                    $('#to').val('')
+                    $('#started').val('')
+                    $('#arrived').val('')
+                    $('#log-list').prepend(`
+                    <li>${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
+                    `)
+                }
+            });
         }
     </script>
 </body>

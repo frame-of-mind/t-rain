@@ -13,6 +13,13 @@ def index():
     return app.send_static_file('index.html')
 
 
+@app.route('/load')
+def get_all():
+    resultList = repository.get_all()
+    data = {"data": resultList}
+    return data, 200
+
+
 @app.route('/hour', methods=['POST'])
 def hour():
     train = request.form.to_dict(flat=True)
