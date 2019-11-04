@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 import repository
 
 app = Flask(__name__, static_url_path='/static')
-host = os.getenv('HOST', '0.0.0.0')
+host = os.getenv('HOST', 'https://t-rain.herokuapp.com/')
 
 
 @app.route('/')
