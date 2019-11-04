@@ -1,8 +1,9 @@
+from pip._vendor.urllib3.util import retry
 from pymongo import MongoClient
 
 # Connect to the MongoDB, change the connection string per your MongoDB environment
 #client = MongoClient(port=27017)
-client = MongoClient('mongodb://root:r00tr00t@ds241968.mlab.com:41968/heroku_s34x7260')
+client = MongoClient('mongodb://root:r00tr00t@ds241968.mlab.com:41968/heroku_s34x7260', retryWrites=False)
 # Set the db object to point to the business database
 db = client.train_mongo
 trains = db.trains
