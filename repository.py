@@ -9,7 +9,7 @@ client = MongoClient(
     'mongodb://%s:%s@%s:%s/%s' % (mongo_username, mongo_password, mongo_host, mongo_port, mongo_db_name),
     retryWrites=False)
 # Set the db object to point to the business database
-db = client.train_mongo
+db = client[mongo_db_name]
 trains = db.trains
 
 
