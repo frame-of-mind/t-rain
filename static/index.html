@@ -26,8 +26,10 @@
     <form action="/hour" method="post">
       <label>From:</label> <input id="from" type="text" name="from" value="ROGOREDO">
       <label>To:</label> <input id="to" type="text" name="to" value="LODI"><a href="#" onclick="onSwitch()">switch</a><br>
-      <label>Started:</label> <input type="datetime-local" name="started" id="started">
-      <label>Arrived:</label> <input type="datetime-local" name="arrived" id="arrived"><br>
+      <label>Should have Started:</label> <input type="datetime-local" name="should-have-started" id="should-have-started" value="2013-03-18T13:00">
+      <label>Should have Arrived:</label> <input type="datetime-local" name="should-have-arrived" id="should-have-arrived" value="2013-03-18T14:00"><br>
+      <label>Started:</label> <input type="datetime-local" name="started" id="started" value="2013-03-18T13:30">
+      <label>Arrived:</label> <input type="datetime-local" name="arrived" id="arrived" value="2013-03-18T14:45"><br>
       <input type="button" onclick="submitTrain()" value="Submit">
     </form>
     <hr>
@@ -48,7 +50,9 @@
                 from: $('#from').val(),
                 to: $('#to').val(),
                 started: $('#started').val(),
-                arrived: $('#arrived').val()
+                arrived: $('#arrived').val(),
+                should-have-started: $('#should-have-started').val(),
+                should-have-arrived: $('#should-have-arrived').val(),
             };
             console.log(data);
 
