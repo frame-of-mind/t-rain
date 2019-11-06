@@ -1,11 +1,8 @@
-import os
-
-from flask import Flask, jsonify, request
+from flask import Flask, request
 
 import repository
 
 app = Flask(__name__, static_url_path='/static')
-#host = os.getenv('HOST', 'https://t-rain.herokuapp.com/')
 
 
 @app.route('/')
@@ -31,5 +28,4 @@ def hour():
 
 # Start the API
 if __name__ == "__main__":
-    #app.run(host=host, debug=True)
     app.run(debug=True)

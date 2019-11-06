@@ -1,13 +1,16 @@
 from pymongo import MongoClient
 
-from settings import mongo_db_name, mongo_host, mongo_password, mongo_port, mongo_username
+from settings import MONGODB_URI
 
 # Connect to the MongoDB, change the connection string per your MongoDB environment
 # client = MongoClient(port=27017)
 # db_name = 'train_mongo'
-client = MongoClient(
-    'mongodb://%s:%s@%s:%s/%s' % (mongo_username, mongo_password, mongo_host, mongo_port, mongo_db_name),
-    retryWrites=False)
+if MONGODB_URI is None:
+    MONGODB_URI = 'mongodb://localhost:27017/train_mongo'
+
+mongo_db_name = MONGODB_URI.split('/')[-1]
+
+client = MongoClient(MONGODB_URI, retryWrites=False)
 # Set the db object to point to the business database
 db = client[mongo_db_name]
 trains = db.trains

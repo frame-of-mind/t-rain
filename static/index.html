@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Train | Report</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
     <script>
         $( document ).ready(function() {
             console.log( "ready!" );
+            $('.datetimepicker-input').datetimepicker({
+                locale: 'it',
+                format: 'D-MM-YYYY, HH:mm'
+            });
             $.ajax({
                 url: "/load",
                 method: 'GET',
@@ -24,13 +34,34 @@
 <body>
     <h1>Train report</h1>
     <form action="/hour" method="post">
-      <label>From:</label> <input id="from" type="text" name="from" value="ROGOREDO">
-      <label>To:</label> <input id="to" type="text" name="to" value="LODI"><a href="#" onclick="onSwitch()">switch</a><br>
-      <label>Should have Started:</label> <input type="datetime-local" name="should-have-started" id="should-have-started" value="2013-03-18T13:00">
-      <label>Should have Arrived:</label> <input type="datetime-local" name="should-have-arrived" id="should-have-arrived" value="2013-03-18T14:00"><br>
-      <label>Started:</label> <input type="datetime-local" name="started" id="started" value="2013-03-18T13:30">
-      <label>Arrived:</label> <input type="datetime-local" name="arrived" id="arrived" value="2013-03-18T14:45"><br>
-      <input type="button" onclick="submitTrain()" value="Submit">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 pr-2">
+                    <input class="form-control" placeholder="From" id="from" type="text" name="from" value="ROGOREDO">
+                </div>
+                <div class="col-sm-5 pr-2">
+                    <input class="form-control" placeholder="To" id="to" type="text" name="to" value="LODI">
+                </div>
+                <div class="col-sm-2"><a class="btn btn-secondary" href="#" onclick="onSwitch()">switch</a></div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-6 pr-2">
+                    <input placeholder="Should Arrive" type="text" name="should-have-started" class="form-control datetimepicker-input" id="should-have-started" data-toggle="datetimepicker" data-target="#should-have-started"/>
+                </div>
+                <div class="col-sm-6 pr-2">
+                    <input placeholder="Should Start" type="text" name="should-have-arrived" class="form-control datetimepicker-input" id="should-have-arrived" data-toggle="datetimepicker" data-target="#should-have-arrived"/>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-6 pr-2">
+                    <input placeholder="Started" type="text" name="started" class="form-control datetimepicker-input" id="started" data-toggle="datetimepicker" data-target="#started"/>
+                </div>
+                <div class="col-sm-6 pr-2">
+                    <input placeholder="Arrived" type="text" name="arrived" class="form-control datetimepicker-input" id="arrived" data-toggle="datetimepicker" data-target="#arrived"/>
+                </div>
+            </div>
+            <input class="btn btn-primary mt-2" type="button" onclick="submitTrain()" value="Submit">
+        </div>
     </form>
     <hr>
     <h1>Log</h1>
@@ -38,8 +69,8 @@
         <ul id="log-list">
 
         </ul>
-    </div>
-    <script>
+        <script>
+
         function onSwitch(){
             let fromVal = $('#from').val();
             $('#from').val($('#to').val());
@@ -47,12 +78,13 @@
         }
         function submitTrain() {
             let data = {
-                'from': $('#from').val(),
-                'to': $('#to').val(),
-                'started': $('#started').val(),
-                'arrived': $('#arrived').val(),
-                'should-have-started': $('#should-have-started').val(),
-                'should-have-arrived': $('#should-have-arrived').val(),
+                "user": "mich",
+                "from": $('#from').val(),
+                "to": $('#to').val(),
+                "started": $('#started').val(),
+                "arrived": $('#arrived').val(),
+                "should-have-started": $('#should-have-started').val(),
+                "should-have-arrived": $('#should-have-arrived').val(),
             };
             console.log(data);
 
@@ -61,10 +93,6 @@
                 method: 'POST',
                 data: data,
                 success: function(result) {
-                    $('#from').val('')
-                    $('#to').val('')
-                    $('#started').val('')
-                    $('#arrived').val('')
                     $('#log-list').prepend(`
                     <li>${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
                     `)
@@ -72,5 +100,6 @@
             });
         }
     </script>
+    </div>
 </body>
 </html>
