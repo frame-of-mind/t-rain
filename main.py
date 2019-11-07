@@ -38,6 +38,14 @@ def get_trains():
 
 @app.route('/log', methods=['POST'])
 def add_log():
+    req = request.form.to_dict(flat=True)
+    train = {
+        "from": req.get('from'),
+        "to": req.get('to'),
+        "start": req.get('should-have-started'),
+        "arrive": req.get('should-have-arrived'),
+    }
+    repository.save_train(train)
     # save train {from, to, should-have-started, should-have-arrived, count}
     # save log {train_id, started, arrived}
     train = request.form.to_dict(flat=True)
