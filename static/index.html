@@ -32,17 +32,18 @@
     </script>
 </head>
 <body>
-    <h1>Train report</h1>
+<div class="container">
+    <h1 class="h1">Train report</h1>
     <form action="/hour" method="post">
         <div class="container">
             <div class="row">
                 <div class="col-sm-5 pr-2">
                     <input class="form-control" placeholder="From" id="from" type="text" name="from" value="ROGOREDO">
                 </div>
+                <div class="col-sm-2 text-center"><a class="btn btn-secondary" href="#" onclick="onSwitch()"><-- SWITCH --></a></div>
                 <div class="col-sm-5 pr-2">
                     <input class="form-control" placeholder="To" id="to" type="text" name="to" value="LODI">
                 </div>
-                <div class="col-sm-2"><a class="btn btn-secondary" href="#" onclick="onSwitch()">switch</a></div>
             </div>
             <div class="row mt-2">
                 <div class="col-sm-6 pr-2">
@@ -63,43 +64,47 @@
             <input class="btn btn-primary mt-2" type="button" onclick="submitTrain()" value="Submit">
         </div>
     </form>
+</div>
     <hr>
-    <h1>Log</h1>
+<div class="container">
+    <h1 class="h1">Log</h1>
     <div>
-        <ul id="log-list">
+        <ul class="list-group" id="log-list">
 
         </ul>
-        <script>
-
-        function onSwitch(){
-            let fromVal = $('#from').val();
-            $('#from').val($('#to').val());
-            $('#to').val(fromVal);
-        }
-        function submitTrain() {
-            let data = {
-                "user": "mich",
-                "from": $('#from').val(),
-                "to": $('#to').val(),
-                "started": $('#started').val(),
-                "arrived": $('#arrived').val(),
-                "should-have-started": $('#should-have-started').val(),
-                "should-have-arrived": $('#should-have-arrived').val(),
-            };
-            console.log(data);
-
-            $.ajax({
-                url: "/hour",
-                method: 'POST',
-                data: data,
-                success: function(result) {
-                    $('#log-list').prepend(`
-                    <li>${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
-                    `)
-                }
-            });
-        }
-    </script>
     </div>
+</div>
+
+<script>
+    function onSwitch(){
+        let fromVal = $('#from').val();
+        $('#from').val($('#to').val());
+        $('#to').val(fromVal);
+    }
+    function submitTrain() {
+        let data = {
+            "user": "mich",
+            "from": $('#from').val(),
+            "to": $('#to').val(),
+            "started": $('#started').val(),
+            "arrived": $('#arrived').val(),
+            "should-have-started": $('#should-have-started').val(),
+            "should-have-arrived": $('#should-have-arrived').val(),
+        };
+        console.log(data);
+
+        $.ajax({
+            url: "/hour",
+            method: 'POST',
+            data: data,
+            success: function(result) {
+                $('#log-list').prepend(`
+                <li class="list-group-item">${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
+                `)
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
