@@ -1,3 +1,5 @@
+import re
+
 from bson import ObjectId
 from pymongo import MongoClient
 
@@ -22,7 +24,9 @@ def save_train(train):
     found_trains = get_trains(train['from'], train['to'], train['start'], train['arrive'])
     if len(found_trains) == 0:
         train['count'] = 1
-        res = trains.insert_one(train)
+        in_id = trains.insert_one(train).inserted_id
+        train['_id'] = str(in_id)
+        return train
     else:
         best_train = None
         for t in found_trains:
@@ -30,7 +34,7 @@ def save_train(train):
                 best_train = t
         best_train['count'] += 1
         res = trains.update_one({'_id': ObjectId(best_train['_id'])}, {"$set": {'count': best_train['count']}})
-    return res
+        return best_train
 
 
 def get_trains(from_station=None, to_station=None, starting_h=None, arriving_h=None):
@@ -40,9 +44,17 @@ def get_trains(from_station=None, to_station=None, starting_h=None, arriving_h=N
     if to_station is not None:
         query['to'] = to_station
     if starting_h is not None:
-        query['start'] = starting_h
+        # take only time
+        time = starting_h.split()[-1]
+        time = '.*'+re.escape(time)
+        rgx = re.compile(time, re.IGNORECASE)  # compile the regex
+        query['start'] = rgx
     if arriving_h is not None:
-        query['arrive'] = arriving_h
+        # take only time
+        time = arriving_h.split()[-1]
+        time = '.*' +re.escape(time)
+        rgx = re.compile(time, re.IGNORECASE)  # compile the regex
+        query['arrive'] = rgx
     cursor = trains.find(query)
     result = []
     for document in cursor:
