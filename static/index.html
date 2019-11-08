@@ -25,7 +25,7 @@
                 success: function(result) {
                     result.data.forEach( function(data) {
                         $('#log-list').prepend(`
-                        <li>${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
+                        <li class="list-group-item">${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
                         `)
                     })
                 }
@@ -96,7 +96,7 @@
         console.log(data);
 
         $.ajax({
-            url: "/hour",
+            url: "/log",
             method: 'POST',
             data: data,
             success: function(result) {
