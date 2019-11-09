@@ -20,12 +20,20 @@
                 sideBySide: true
             });
             $.ajax({
-                url: "/load",
+                url: "/logs",
                 method: 'GET',
                 success: function(result) {
                     result.data.forEach( function(data) {
                         $('#log-list').prepend(`
-                        <li class="list-group-item">${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="row">${data.from} (${data['should-have-started']})</div>
+                                        <div class="row">${data.to} (${data['should-have-arrived']})</div>
+                                    </div>
+                                    <div class="col-6">${data.started} -> ${data.arrived}</div>
+                                </div>
+                            </li>
                         `)
                     })
                 }
@@ -42,7 +50,7 @@
                 <div class="col-sm-5 pr-2">
                     <input class="form-control" placeholder="From" id="from" type="text" name="from" value="ROGOREDO">
                 </div>
-                <div class="col-sm-2 text-center"><a class="btn btn-secondary" href="#" onclick="onSwitch()"><-- SWITCH --></a></div>
+                <div class="col-sm-2 text-center"><a class="btn btn-secondary" href="#" onclick="onSwitch()">SWITCH</a></div>
                 <div class="col-sm-5 pr-2">
                     <input class="form-control" placeholder="To" id="to" type="text" name="to" value="LODI">
                 </div>
@@ -101,7 +109,15 @@
             data: data,
             success: function(result) {
                 $('#log-list').prepend(`
-                <li class="list-group-item">${data.from} - ${data.to}: ${data.started} -> ${data.arrived}</li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">${data.from} (${data['should-have-started']})</div>
+                                <div class="row">${data.to} (${data['should-have-arrived']})</div>
+                            </div>
+                            <div class="col-6">${data.started} -> ${data.arrived}</div>
+                        </div>
+                    </li>
                 `)
             }
         });

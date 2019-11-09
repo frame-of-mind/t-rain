@@ -64,7 +64,7 @@ def get_trains(from_station=None, to_station=None, starting_h=None, arriving_h=N
 
 
 def get_train_by_id(id):
-    train = trains.find_one({'_id': id})
+    train = trains.find_one({'_id': ObjectId(id)})
     return train
 
 
